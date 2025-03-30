@@ -28,88 +28,100 @@ public:
         }
         reduce();
     }
-    static Fraction add(const Fraction& frac1, const Fraction& frac2) {
-        int num = frac1.numerator * frac2.denominator + frac2.numerator * frac1.denominator;
-        int denom = frac1.denominator * frac2.denominator;
-        return Fraction(num, denom);
-    }
-    static Fraction subtract(const Fraction& frac1, const Fraction& frac2) {
-        int num = frac1.numerator * frac2.denominator - frac2.numerator * frac1.denominator;
-        int denom = frac1.denominator * frac2.denominator;
-        return Fraction(num, denom);
-    }
-    static Fraction multiply(const Fraction& frac1, const Fraction& frac2) {
-        int num = frac1.numerator * frac2.numerator;
-        int denom = frac1.denominator * frac2.denominator;
-        return Fraction(num, denom);
-    }
-    static Fraction divide(const Fraction& frac1, const Fraction& frac2) {
-        if (frac2.numerator == 0) {
-            cout << "Error: Division by zero!" << endl;
-            return frac1;
-        }
-        int num = frac1.numerator * frac2.denominator;
-        int denom = frac1.denominator * frac2.numerator;
-        return Fraction(num, denom);
-    }
-    static bool isEqual(const Fraction& frac1, const Fraction& frac2) {
-        return frac1.numerator == frac2.numerator && frac1.denominator == frac2.denominator;
-    }
-    double toDecimal() const {
-        return static_cast<double>(numerator) / denominator;
-    }
-    void input() {
-        cout << "Enter numerator: ";
-        cin >> numerator;
-        do {
-            cout << "Enter denominator (non-zero): ";
-            cin >> denominator;
-            if (denominator == 0) {
-                cout << "Denominator cannot be zero, try again!" << endl;
-            }
-        } while (denominator == 0);
-        reduce();
-    }
-    void output(){
-        cout << numerator << "/" << denominator;
-    }
+    int getNumerator() { return numerator; }
+    int getDenominator() { return denominator; }
+    void input();
+    void output();
+    double toDecimal();
 };
 
-void inputFraction(Fraction& frac) {
-    frac.input();
+void Fraction::input() {
+    cout << "Enter numerator: ";
+    cin >> numerator;
+    do {
+        cout << "Enter denominator (non-zero): ";
+        cin >> denominator;
+        if (denominator == 0) {
+            cout << "Denominator cannot be zero, try again!" << endl;
+        }
+    } while (denominator == 0);
+    reduce();
 }
 
-void outputFraction(Fraction& frac) {
-    frac.output();
+void Fraction::output() {
+    cout << numerator << "/" << denominator << endl;
+}
+
+double Fraction::toDecimal() {
+    return (double)numerator / denominator;
+}
+
+Fraction add(Fraction& frac1, Fraction& frac2) {
+    int num = frac1.getNumerator() * frac2.getDenominator() + frac2.getNumerator() * frac1.getDenominator();
+    int denom = frac1.getDenominator() * frac2.getDenominator();
+    return Fraction(num, denom);
+}
+
+Fraction subtract(Fraction& frac1, Fraction& frac2) {
+    int num = frac1.getNumerator() * frac2.getDenominator() - frac2.getNumerator() * frac1.getDenominator();
+    int denom = frac1.getDenominator() * frac2.getDenominator();
+    return Fraction(num, denom);
+}
+
+Fraction multiply(Fraction& frac1, Fraction& frac2) {
+    int num = frac1.getNumerator() * frac2.getNumerator();
+    int denom = frac1.getDenominator() * frac2.getDenominator();
+    return Fraction(num, denom);
+}
+
+Fraction divide(Fraction& frac1, Fraction& frac2) {
+    if (frac2.getNumerator() == 0) {
+        cout << "Error: Division by zero!" << endl;
+        return frac1;
+    }
+    int num = frac1.getNumerator() * frac2.getDenominator();
+    int denom = frac1.getDenominator() * frac2.getNumerator();
+    return Fraction(num, denom);
+}
+
+bool isEqual(Fraction& frac1, Fraction& frac2) {
+    return frac1.getNumerator() == frac2.getNumerator() && frac1.getDenominator() == frac2.getDenominator();
 }
 
 int main() {
-    Fraction frac1, frac2;  
+    Fraction frac1, frac2;
     cout << "Enter the first fraction:\n";
-    inputFraction(frac1);
+    frac1.input();
     cout << "Enter the second fraction:\n";
-    inputFraction(frac2);
+    frac2.input();
+    
     cout << "First fraction: ";
-    outputFraction(frac1);
+    frac1.output();
     cout << "Second fraction: ";
-    outputFraction(frac2);
-    Fraction sum = Fraction::add(frac1, frac2);
+    frac2.output();
+    
+    Fraction sum = add(frac1, frac2);
     cout << "Sum: ";
-    outputFraction(sum);
-    Fraction diff = Fraction::subtract(frac1, frac2);
+    sum.output();
+    
+    Fraction diff = subtract(frac1, frac2);
     cout << "Difference: ";
-    outputFraction(diff);
-    Fraction prod = Fraction::multiply(frac1, frac2);
+    diff.output();
+    
+    Fraction prod = multiply(frac1, frac2);
     cout << "Product: ";
-    outputFraction(prod);
-    Fraction quotient = Fraction::divide(frac1, frac2);
+    prod.output();
+    
+    Fraction quotient = divide(frac1, frac2);
     cout << "Quotient: ";
-    outputFraction(quotient);
-    if (Fraction::isEqual(frac1, frac2)) {
+    quotient.output();
+    
+    if (isEqual(frac1, frac2)) {
         cout << "Fractions are equal.\n";
     } else {
         cout << "Fractions are not equal.\n";
     }
+    
     cout << "First fraction as decimal: " << frac1.toDecimal() << endl;
     cout << "Second fraction as decimal: " << frac2.toDecimal() << endl;
 }
